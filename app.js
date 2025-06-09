@@ -8,7 +8,7 @@ const today = new Date().toISOString().slice(0, 10);
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const desc = document.getElementById('Description').value;
-    const value = document.getElementById('Value').value;
+    const value = parseFloat(document.getElementById('Value').value);
     const recordType = document.getElementById('Type').value;
     const date = today;
 
@@ -34,8 +34,18 @@ async function refresh() {
         const li = document.createElement('li');
         li.textContent = `${date} - ${desc} : R$ ${value.toFixed(2)} - (${recordType})`;
         list.appendChild(li);
-    }
-    )
+
+        if (recordType === 'Income') {
+            totalG += value;
+            if (date === today) totalD += value;
+          } else {
+            totalG -= value;
+            if (date === today) totalD -= value;
+          }
+        });
+      
+    totalDaily.textContent = `R$ ${totalD.toFixed(2)}`;
+    total.textContent = `R$ ${totalG.toFixed(2)}`;
 
 }
 
